@@ -1,0 +1,16 @@
+meta {
+  name: Get artist by id (404)
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{url}}/artists/888fc2ba-2027-4a9b-a569-4a2527329bf1
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

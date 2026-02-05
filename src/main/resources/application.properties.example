@@ -1,0 +1,9 @@
+quarkus.datasource.db-kind=postgresql
+quarkus.datasource.jdbc.url=jdbc:postgresql://...
+quarkus.datasource.username=
+quarkus.datasource.password=
+
+%dev.quarkus.hibernate-orm.schema-management.strategy=drop-and-create
+
+%prod.quarkus.hibernate-orm.schema-management.strategy=update
+%prod.quarkus.hibernate-orm.sql-load-script=no-file
