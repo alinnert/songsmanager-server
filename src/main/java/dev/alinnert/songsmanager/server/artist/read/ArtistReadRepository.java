@@ -21,11 +21,7 @@ public class ArtistReadRepository
     }
 
     public Optional<ArtistDetailedResponseDto> fetchDetailedArtist(UUID id) {
-        return ArtistEntity
-            .find("id", id)
-            .project(ArtistSimpleResponseDto.class)
-            .firstResultOptional()
-            .map(ArtistDetailedResponseDto::fromArtistSimpleResponseDto);
+        return fetchSimpleArtist(id).map(ArtistDetailedResponseDto::fromArtistSimpleResponseDto);
     }
 
     public Optional<ArtistDetailedResponseDto> fetchDetailedArtistWithSongs(UUID id) {
