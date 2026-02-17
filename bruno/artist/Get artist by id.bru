@@ -5,9 +5,13 @@ meta {
 }
 
 get {
-  url: {{url}}/artists/888fc2ba-2027-4a9b-a569-4a2527329bf2
+  url: {{url}}/artists/888fc2ba-2027-4a9b-a569-4a2527329bf2?view=with-songs
   body: none
   auth: inherit
+}
+
+params:query {
+  view: with-songs
 }
 
 settings {

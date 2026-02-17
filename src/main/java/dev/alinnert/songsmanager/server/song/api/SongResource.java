@@ -1,7 +1,6 @@
 package dev.alinnert.songsmanager.server.song.api;
 
-import dev.alinnert.songsmanager.server.song.dto.SongDetailedResponseDto;
-import dev.alinnert.songsmanager.server.song.dto.SongSimpleResponseDto;
+import dev.alinnert.songsmanager.server.song.domain.SongDto;
 import jakarta.ws.rs.*;
 
 import java.util.List;
@@ -11,13 +10,13 @@ import java.util.UUID;
 public class SongResource
 {
     @GET
-    public List<SongSimpleResponseDto> listSongs() {
+    public List<SongDto.SimpleResponse> listSongs() {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @GET
     @Path("/{id}")
-    public SongDetailedResponseDto getSongById(
+    public SongDto.DetailedResponse getSongById(
         @PathParam("id") UUID id,
         @QueryParam("view") SongView songView
     ) {

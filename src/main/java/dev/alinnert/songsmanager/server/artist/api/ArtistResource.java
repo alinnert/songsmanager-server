@@ -1,8 +1,6 @@
 package dev.alinnert.songsmanager.server.artist.api;
 
-import dev.alinnert.songsmanager.server.artist.api.dto.ArtistDetailedResponseDto;
-import dev.alinnert.songsmanager.server.artist.api.dto.ArtistPostRequestDto;
-import dev.alinnert.songsmanager.server.artist.api.dto.ArtistSimpleResponseDto;
+import dev.alinnert.songsmanager.server.artist.domain.ArtistDto;
 import dev.alinnert.songsmanager.server.artist.read.ArtistReadService;
 import dev.alinnert.songsmanager.server.artist.write.ArtistWriteService;
 import jakarta.inject.Inject;
@@ -22,13 +20,13 @@ public class ArtistResource
     ArtistReadService artistReadService;
 
     @GET
-    public List<ArtistSimpleResponseDto> listArtists() {
+    public List<ArtistDto.SimpleResponse> listArtists() {
         return artistReadService.getAll();
     }
 
     @GET
     @Path("/{id}")
-    public ArtistDetailedResponseDto getArtistById(
+    public ArtistDto.DetailedResponse getArtistById(
         @PathParam("id") UUID id,
         @QueryParam("view") ArtistView artistView
     ) {
@@ -40,9 +38,9 @@ public class ArtistResource
     }
 
     @POST
-    public ArtistSimpleResponseDto addArtist(
+    public ArtistDto.SimpleResponse addArtist(
         // TODO: Validate request body
-        @RequestBody ArtistPostRequestDto artist
+        @RequestBody ArtistDto.PostRequest artist
     ) {
         return artistWriteService.add(artist);
     }

@@ -1,10 +1,9 @@
 package dev.alinnert.songsmanager.server.artist.read;
 
-import dev.alinnert.songsmanager.server.artist.api.dto.ArtistDetailedResponseDto;
-import dev.alinnert.songsmanager.server.artist.api.dto.ArtistSimpleResponseDto;
+import dev.alinnert.songsmanager.server.artist.domain.ArtistDto;
 import dev.alinnert.songsmanager.server.artist.domain.ArtistEntity;
+import dev.alinnert.songsmanager.server.song.domain.SongDto;
 import dev.alinnert.songsmanager.server.song.domain.SongEntity;
-import dev.alinnert.songsmanager.server.song.dto.SongSimpleResponseDto;
 import jakarta.enterprise.context.ApplicationScoped;
 
 import java.util.Optional;
@@ -13,27 +12,28 @@ import java.util.UUID;
 @ApplicationScoped
 public class ArtistReadRepository
 {
-    public Optional<ArtistSimpleResponseDto> fetchSimpleArtist(UUID id) {
+    public Optional<ArtistDto.SimpleResponse> fetchSimpleArtist(UUID id) {
         return ArtistEntity
             .find("id", id)
-            .project(ArtistSimpleResponseDto.class)
+            .project(ArtistDto.SimpleResponse.class)
             .firstResultOptional();
     }
 
-    public Optional<ArtistDetailedResponseDto> fetchDetailedArtist(UUID id) {
-        return fetchSimpleArtist(id).map(ArtistDetailedResponseDto::fromArtistSimpleResponseDto);
+    public Optional<ArtistDto.DetailedResponse> fetchDetailedArtist(UUID id) {
+        return fetchSimpleArtist(id).map(ArtistDto.DetailedResponse::fromSimpleResponse);
     }
 
-    public Optional<ArtistDetailedResponseDto> fetchDetailedArtistWithSongs(UUID id) {
+    public Optional<ArtistDto.DetailedResponse> fetchDetailedArtistWithSongs(
+        UUID id
+    ) {
         return fetchSimpleArtist(id).map(artist -> {
             var songs = SongEntity
                 .find("artist.id", artist.id())
-                .project(SongSimpleResponseDto.class)
+                .project(SongDto.SimpleResponse.class)
                 .list();
 
-            return new ArtistDetailedResponseDto(
-                artist.id(),
-                artist.name(),
+            return ArtistDto.DetailedResponse.fromSimpleResponseAndSongs(
+                artist,
                 songs
             );
         });
