@@ -7,11 +7,8 @@ import io.quarkus.runtime.annotations.RegisterForReflection;
 import java.util.List;
 import java.util.UUID;
 
-public abstract class ArtistDto
+public abstract class ArtistResponseDto
 {
-    @RegisterForReflection
-    public record PostRequest(String name) {}
-
     @RegisterForReflection
     public record SimpleResponse(UUID id, String name) {}
 

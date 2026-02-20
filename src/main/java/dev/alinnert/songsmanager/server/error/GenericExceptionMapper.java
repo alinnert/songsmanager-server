@@ -16,18 +16,20 @@ public class GenericExceptionMapper implements ExceptionMapper<Throwable>
     UriInfo uriInfo;
 
     @Override
-    public Response toResponse(Throwable e) {
-        int statusCode = Optional
-            .ofNullable(((WebApplicationException) e).getResponse())
-            .map(Response::getStatus)
-            .orElse(500);
+    public Response toResponse(Throwable throwable) {
+        int statusCode = Optional.of(throwable).map(e -> {
+            if (e instanceof WebApplicationException wae) {
+                return wae.getResponse().getStatus();
+            }
+            return 500;
+        }).orElse(500);
 
         var status = Optional
             .ofNullable(Response.Status.fromStatusCode(statusCode))
             .orElse(Response.Status.INTERNAL_SERVER_ERROR);
 
         var message = Optional
-            .ofNullable(e.getMessage())
+            .ofNullable(throwable.getMessage())
             .orElse(status.getReasonPhrase());
 
         var code = status.name();

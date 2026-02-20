@@ -1,7 +1,7 @@
 package dev.alinnert.songsmanager.server.artist.read;
 
 import dev.alinnert.songsmanager.server.artist.api.ArtistView;
-import dev.alinnert.songsmanager.server.artist.domain.ArtistDto;
+import dev.alinnert.songsmanager.server.artist.domain.ArtistResponseDto;
 import dev.alinnert.songsmanager.server.artist.domain.ArtistEntity;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -16,21 +16,21 @@ public class ArtistReadService
     @Inject
     ArtistReadRepository artistReadRepository;
 
-    public List<ArtistDto.SimpleResponse> getAll() {
+    public List<ArtistResponseDto.SimpleResponse> getAll() {
         return ArtistEntity
             .findAll()
-            .project(ArtistDto.SimpleResponse.class)
+            .project(ArtistResponseDto.SimpleResponse.class)
             .list();
     }
 
-    public Optional<ArtistDto.SimpleResponse> getById(UUID id) {
+    public Optional<ArtistResponseDto.SimpleResponse> getById(UUID id) {
         return Optional.ofNullable(ArtistEntity
             .find("id", id)
-            .project(ArtistDto.SimpleResponse.class)
+            .project(ArtistResponseDto.SimpleResponse.class)
             .firstResult());
     }
 
-    public Optional<ArtistDto.DetailedResponse> getById(
+    public Optional<ArtistResponseDto.DetailedResponse> getById(
         UUID id,
         ArtistView artistView
     ) {

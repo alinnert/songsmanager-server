@@ -1,6 +1,7 @@
 package dev.alinnert.songsmanager.server.artist.api;
 
-import dev.alinnert.songsmanager.server.artist.domain.ArtistDto;
+import dev.alinnert.songsmanager.server.artist.domain.ArtistRequestDto;
+import dev.alinnert.songsmanager.server.artist.domain.ArtistResponseDto;
 import dev.alinnert.songsmanager.server.artist.read.ArtistReadService;
 import dev.alinnert.songsmanager.server.artist.write.ArtistWriteService;
 import jakarta.inject.Inject;
@@ -8,6 +9,7 @@ import jakarta.ws.rs.*;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Path("/artists")
@@ -20,13 +22,13 @@ public class ArtistResource
     ArtistReadService artistReadService;
 
     @GET
-    public List<ArtistDto.SimpleResponse> listArtists() {
+    public List<ArtistResponseDto.SimpleResponse> listArtists() {
         return artistReadService.getAll();
     }
 
     @GET
     @Path("/{id}")
-    public ArtistDto.DetailedResponse getArtistById(
+    public ArtistResponseDto.DetailedResponse getArtistById(
         @PathParam("id") UUID id,
         @QueryParam("view") ArtistView artistView
     ) {
@@ -38,11 +40,15 @@ public class ArtistResource
     }
 
     @POST
-    public ArtistDto.SimpleResponse addArtist(
+    public ArtistResponseDto.SimpleResponse addArtist(
         // TODO: Validate request body
-        @RequestBody ArtistDto.PostRequest artist
+        @RequestBody ArtistRequestDto.PostRequest artist
     ) {
-        return artistWriteService.add(artist);
+        return Optional
+            .ofNullable(artist)
+            .map(a -> artistWriteService.add(a))
+            .orElseThrow(() -> new BadRequestException(
+                "No request body provided"));
     }
 
     @DELETE
